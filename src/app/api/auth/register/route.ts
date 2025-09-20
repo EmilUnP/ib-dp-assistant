@@ -17,6 +17,14 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Prevent admin registration
+    if (role === 'ADMIN') {
+      return NextResponse.json(
+        { error: 'Admin registration is not allowed' },
+        { status: 403 }
+      )
+    }
+
     if (!validateEmail(email)) {
       return NextResponse.json(
         { error: 'Invalid email format' },

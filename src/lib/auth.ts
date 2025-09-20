@@ -18,6 +18,25 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
+        // Hardcoded admin user
+        const ADMIN_EMAIL = 'admin@ib-dp-assistant.com'
+        const ADMIN_PASSWORD = 'Admin123!@#'
+        
+        if (credentials.email === ADMIN_EMAIL) {
+          if (credentials.password === ADMIN_PASSWORD) {
+            return {
+              id: 'admin-001',
+              email: ADMIN_EMAIL,
+              name: 'System Administrator',
+              role: 'ADMIN' as UserRole,
+              studentProfile: null,
+              teacherProfile: null,
+              coordinatorProfile: null
+            }
+          }
+          return null
+        }
+
         const user = await prisma.user.findUnique({
           where: {
             email: credentials.email
