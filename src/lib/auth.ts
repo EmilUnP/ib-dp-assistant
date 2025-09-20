@@ -18,27 +18,8 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
-        // Hardcoded admin user - no database required
-        const ADMIN_EMAIL = 'admin@ib-dp-assistant.com'
-        const ADMIN_PASSWORD = 'Admin123!@#'
-        
-        if (credentials.email === ADMIN_EMAIL) {
-          if (credentials.password === ADMIN_PASSWORD) {
-            return {
-              id: 'admin-001',
-              email: ADMIN_EMAIL,
-              name: 'System Administrator',
-              role: 'ADMIN' as UserRole,
-              studentProfile: null,
-              teacherProfile: null,
-              coordinatorProfile: null
-            }
-          }
-          return null
-        }
-
-        // For other users, try database connection
         try {
+          // Find user in database (including admin)
           const user = await prisma.user.findUnique({
             where: {
               email: credentials.email
@@ -74,7 +55,6 @@ export const authOptions: NextAuthOptions = {
           }
         } catch (error) {
           console.error('Database connection error:', error)
-          // If database is not available, only allow admin login
           return null
         }
       }
