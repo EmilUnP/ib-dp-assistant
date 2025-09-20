@@ -1,0 +1,71 @@
+{
+  "name": "ib-dp-assistant",
+  "version": "1.0.0",
+  "description": "IB Diploma Coordinator Assistant - AI-integrated platform for IB DP management",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:seed": "prisma db seed",
+    "db:studio": "prisma studio",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@headlessui/react": "^2.2.0",
+    "@heroicons/react": "^2.1.5",
+    "@hookform/resolvers": "^3.10.0",
+    "@prisma/client": "^6.1.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22.10.2",
+    "@types/nodemailer": "^6.4.19",
+    "autoprefixer": "^10.4.20",
+    "bcryptjs": "^2.4.3",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "eslint": "^9.17.0",
+    "eslint-config-next": "^15.5.3",
+    "jspdf": "^2.5.2",
+    "lucide-react": "^0.468.0",
+    "next": "^15.5.3",
+    "next-auth": "^4.24.10",
+    "nodemailer": "^6.9.16",
+    "postcss": "^8.4.49",
+    "prisma": "^6.1.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.54.2",
+    "recharts": "^2.13.3",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.6.3",
+    "xlsx": "^0.18.5",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/d3-array": "^3.2.2",
+    "@types/d3-color": "^3.1.3",
+    "@types/d3-path": "^3.1.1",
+    "@types/d3-scale": "^4.0.9",
+    "@types/d3-shape": "^3.1.7",
+    "@types/nodemailer": "^6.4.19",
+    "@types/prop-types": "^15.7.15",
+    "@types/react": "^18.3.24",
+    "@types/react-dom": "^18.3.7"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
+  "keywords": [
+    "IB",
+    "Diploma",
+    "Education",
+    "Management",
+    "AI"
+  ],
+  "author": "IB DP Assistant Team",
+  "license": "MIT"
+}
