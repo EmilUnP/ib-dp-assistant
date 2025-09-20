@@ -22,6 +22,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.10.2",
     "@types/nodemailer": "^6.4.19",
+    "@vercel/analytics": "^1.5.0",
     "autoprefixer": "^10.4.20",
     "bcryptjs": "^2.4.3",
     "clsx": "^2.1.1",

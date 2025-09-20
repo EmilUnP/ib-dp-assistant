@@ -18,7 +18,7 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
-        // Hardcoded admin user
+        // Hardcoded admin user - no database required
         const ADMIN_EMAIL = 'admin@ib-dp-assistant.com'
         const ADMIN_PASSWORD = 'Admin123!@#'
         
@@ -37,38 +37,45 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email
-          },
-          include: {
-            studentProfile: true,
-            teacherProfile: true,
-            coordinatorProfile: true
+        // For other users, try database connection
+        try {
+          const user = await prisma.user.findUnique({
+            where: {
+              email: credentials.email
+            },
+            include: {
+              studentProfile: true,
+              teacherProfile: true,
+              coordinatorProfile: true
+            }
+          })
+
+          if (!user) {
+            return null
           }
-        })
 
-        if (!user) {
+          const isPasswordValid = await bcrypt.compare(
+            credentials.password,
+            user.password
+          )
+
+          if (!isPasswordValid) {
+            return null
+          }
+
+          return {
+            id: user.id,
+            email: user.email,
+            name: `${user.firstName} ${user.lastName}`,
+            role: user.role,
+            studentProfile: user.studentProfile,
+            teacherProfile: user.teacherProfile,
+            coordinatorProfile: user.coordinatorProfile
+          }
+        } catch (error) {
+          console.error('Database connection error:', error)
+          // If database is not available, only allow admin login
           return null
-        }
-
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password,
-          user.password
-        )
-
-        if (!isPasswordValid) {
-          return null
-        }
-
-        return {
-          id: user.id,
-          email: user.email,
-          name: `${user.firstName} ${user.lastName}`,
-          role: user.role,
-          studentProfile: user.studentProfile,
-          teacherProfile: user.teacherProfile,
-          coordinatorProfile: user.coordinatorProfile
         }
       }
     })
