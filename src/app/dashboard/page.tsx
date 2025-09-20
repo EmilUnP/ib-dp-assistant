@@ -1,7 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
+// Disable SSR for this component to prevent useSession issues during build
+export const dynamic = 'force-dynamic'
 import Navigation from '@/components/Navigation'
 import Dashboard from '@/components/Dashboard'
 import { UserRole } from '@/types'
@@ -20,14 +22,26 @@ interface UserData {
 }
 
 export default function DashboardPage() {
-  const { data: session, status } = useSession()
+  // Safely handle useSession to prevent build errors
+  let session = null
+  let status = 'loading'
+  
+  try {
+    const sessionResult = useSession()
+    session = sessionResult?.data || null
+    status = sessionResult?.status || 'loading'
+  } catch (error) {
+    console.warn('useSession not available during build:', error)
+    session = null
+    status = 'loading'
+  }
   const [userData, setUserData] = useState<UserData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [retryCount, setRetryCount] = useState(0)
 
   // Mock user data fetching with error handling
-  const fetchUserData = async (retry = 0): Promise<void> => {
+  const fetchUserData = useCallback(async (retry = 0): Promise<void> => {
     try {
       setIsLoading(true)
       setError(null)
@@ -68,13 +82,13 @@ export default function DashboardPage() {
         }, 2000)
       }
     }
-  }
+  }, [session?.user?.email, session?.user?.image, session?.user?.name])
 
   useEffect(() => {
-    if (status !== 'loading') {
+    if (status !== 'loading' && status !== 'unauthenticated') {
       fetchUserData()
     }
-  }, [status])
+  }, [status, fetchUserData])
 
   const handleRetry = () => {
     setRetryCount(0)

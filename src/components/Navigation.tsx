@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { 
   AcademicCapIcon,
@@ -127,9 +128,11 @@ export default function Navigation({ userRole, userName, userEmail, userAvatar }
                 <div className="flex items-center space-x-3">
                   <div className="flex items-center space-x-2">
                     {userAvatar ? (
-                      <img
+                      <Image
                         src={userAvatar}
                         alt={userName}
+                        width={32}
+                        height={32}
                         className="h-8 w-8 rounded-full object-cover"
                       />
                     ) : (
@@ -223,9 +226,11 @@ export default function Navigation({ userRole, userName, userEmail, userAvatar }
                 <div className="flex items-center px-4">
                   <div className="flex-shrink-0">
                     {userAvatar ? (
-                      <img
+                      <Image
                         src={userAvatar}
                         alt={userName}
+                        width={40}
+                        height={40}
                         className="h-10 w-10 rounded-full object-cover"
                       />
                     ) : (
